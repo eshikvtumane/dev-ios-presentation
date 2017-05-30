@@ -1,0 +1,328 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Разработка на IOS</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+				<section>
+					<h3>Разработка на IOS</h3>
+					<img src="images/swift.svg" width="40%" height="20%">
+					<img src="images/apple.svg" width="15%" height="15%">
+				</section>
+
+				<section>
+					<h1>Архитектура</h1>
+				</section>
+
+				<section>
+					<h3>Apple MVC</h3>
+					<h3>(Model-View-Controller)</h3>
+					<img src="images/mvc.png" width="100%" height="100%">
+				</section>
+
+				<section>
+					<h3>Apple MVC</h3>
+					<h3>(Massive View Controller)</h3>
+					<img src="images/MVCScheme.png" width="100%" height="100%">
+				</section>
+
+				<section>
+					<h3><a target="_blank" href="https://www.objc.io/issues/13-architecture/viper/">Mutual Mobile</a> VIPER</h3>
+					<h4>View-Interactor-Presenter-Entity-Router</h4>
+					<img src="images/viper_schema.png" width="100%" height="100%">
+				</section>
+
+				<section>
+					<h3><a target="_blank" href="https://cheesecakelabs.com/blog/ios-project-architecture-using-viper/">Структура модуля</a> VIPER</h3>
+					<img src="images/module_structure.png" width="50%" height="30%">
+				</section>
+
+				<section>
+					<h3>Кодогенерация</h3>
+				</section>
+
+				<section>
+					<h3>Rambler&Co - <a target="_blank" href="https://github.com/rambler-digital-solutions/Generamba">Generamba</a></h3>
+					<img src="images/generamba.png" width="50%" height="30%">
+				</section>
+
+				<section>
+					<h4>Структура</a></h4>
+					<img src="images/generamba_schema.png" width="40%" height="10%">
+				</section>
+
+				
+
+				<section>
+					<h4>Rambafile</h4>
+					<pre><code class="hljs" data-trim contenteditable>
+						### Headers settings
+						company: Айтиха
+
+						### Xcode project settings
+						project_name: testProject
+						xcodeproj_path: testProject.xcodeproj
+						#prefix: testProject
+
+						### Code generation settings section
+						# The main project target name
+						project_target: testProject
+
+						# The file path for new modules
+						project_file_path: testProject/Modules
+
+						# The Xcode group path to new modules
+						#project_group_path: testProject/Modules
+
+						### Tests generation settings section
+						# The tests target name
+						test_target: testProject
+
+						# The file path for new tests
+						test_file_path: Tests
+
+						# The Xcode group path to new tests
+						#test_group_path: Tests
+
+						### Dependencies settings section
+						podfile_path: Podfile
+
+						### Templates
+						templates:
+						- {name: swifty_viper}
+						- {name: custom_swifty_viper}
+					</code></pre>
+				</section>
+
+
+				<section>
+					<h4>Rambaspec</h4>
+					<pre><code class="hljs" data-trim contenteditable>
+						# Template information section
+						name: "custom_swifty_viper"
+						summary: "Swift VIPER module template."
+						author: "Pavel Tolstoy"
+						version: "0.0.1"
+						license: "MIT"
+
+						# The declarations for code files
+
+						code_files:
+						# View layer
+						- {name: View/ViewInterface.swift,  path: Code/View/view_interface.swift.liquid}
+						- {name: View/ViewController.swift, path: Code/View/table_view_controller.swift.liquid}
+						- {name: View/TableViewCell.swift, path: Code/View/table_view_cell_interface.swift.liquid}
+
+						# Wireframe
+						- {name: Wireframe/Wireframe.swift, path: Code/Wireframe/wireframe.swift.liquid}
+						- {name: Wireframe/WireframeInput.swift, path: Code/Wireframe/wireframe_input.swift.liquid}
+
+						# Presenter
+						- {name: Presenter/Presenter.swift, path: Code/Presenter/presenter.swift.liquid}
+
+						# Interactor
+						- {name: Interactor/Interactor.swift, path: Code/Interactor/interactor.swift.liquid }
+						- {name: Interactor/InteractorInput.swift, path: Code/Interactor/interactor_input.swift.liquid }
+						- {name: Interactor/InteractorOutput.swift, path: Code/Interactor/interactor_output.swift.liquid }
+
+						# Module Interface
+						- {name: ModuleInterface/ModuleInterface.swift, path: Code/ModuleInterface/module_interface.swift.liquid }
+					</code></pre>
+				</section>
+
+
+				<section>
+					<h4>Шаблон .liquid</h4>
+					<pre><code class="hljs" data-trim contenteditable>
+						//
+						//  {{ module_info.name }}{{ module_info.file_name }}
+						//  {{ module_info.project_name }}
+						//
+						//  Created by {{ developer.name }} on {{ date }}.
+						//  Copyright © {{ year }} {{ developer.company }}. All rights reserved.
+						//
+
+
+						import Foundation
+
+						protocol {{ module_info.name }}InteractorInput
+						{
+						    func fetch{{ module_info.name }}s()
+						}
+					</code></pre>
+				</section>
+
+				<section>
+					<h4>Создание модуля</h4>
+					<pre><code class="hljs" data-trim contenteditable>
+						generamba gen [MODULE_NAME] [TEMPLATE_NAME]
+					</code></pre>
+
+					<pre><code class="hljs" data-trim contenteditable>
+						generamba gen Article custom_swifty_viper
+					</code></pre>
+				</section>
+
+				<section>
+					<h3>Название ресурсов</h3>
+
+					<pre><code class="hljs" data-trim contenteditable>
+let image1 = UIImage(named: "Banana")
+					</code></pre>
+				</section>
+
+				<section>
+					<h3><a target="_blank" href="https://github.com/SwiftGen/SwiftGen">SwiftGen</a></h3>
+
+
+					<pre><code class="hljs" data-trim contenteditable>
+swiftgen images [OPTIONS] DIR
+swiftgen strings [OPTIONS] FILE
+swiftgen storyboards [OPTIONS] DIR
+swiftgen colors [OPTIONS] FILE
+swiftgen fonts [OPTIONS] DIR
+
+let image1 = UIImage(asset: .Banana)
+					</code></pre>
+				</section>
+
+				<!-- ============ -->
+
+				<section>
+					<h3>Интерфейс</h3>
+				</section>
+
+				
+				<section>
+					<h4>Storyboard</h4>
+					<img src="images/storyboard.png">
+				</section>
+
+				<section>
+					<h4>Storyboard HELL</h4>
+					<img src="images/storyboard_hell.jpg">
+				</section>
+
+
+				<section>
+					<h4>NSLayoutConstraint</h4>
+					<pre><code class="hljs" data-trim contenteditable>
+self.articlesTableView.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint(item: self.articlesTableView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: 0).active = true
+NSLayoutConstraint(item: self.articlesTableView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: 0).active = true
+NSLayoutConstraint(item: self.articlesTableView, attribute: .Left, relatedBy: .Equal, toItem: self.view, attribute: .Left, multiplier: 1, constant: 0).active = true
+NSLayoutConstraint(item: self.articlesTableView, attribute: .Right, relatedBy: .Equal, toItem: self.view, attribute: .Right, multiplier: 1, constant: 0).active = true
+
+					</code></pre>
+				</section>
+
+				<section>
+					<h4><a target="_blank" href="https://github.com/robb/Cartography">Cartography</a></h4>
+					<pre><code class="hljs" data-trim contenteditable>
+constrain(self.view, self.articlesTableView){view, table in
+    table.top == view.top
+    table.bottom == view.bottom
+    table.left == view.left
+    table.right == view.right
+}
+
+					</code></pre>
+				</section>
+
+
+				
+
+				<section>
+					<h3>Ссылки</h3>
+
+					<ul>
+						<li>
+							<a target="_blank" href="https://etolstoy.gitbooks.io/the-book-of-viper/content/">Книга VIPER</a> от Rambler
+						</li>
+						<li>
+						<a target="_blank" href="https://cheesecakelabs.com/blog/ios-project-architecture-using-viper/">Cheesecake labs</a> - описание VIPER
+						</li>
+						<li>
+							<a target="_blank" href="https://www.slideshare.net/Rambler-iOS/viper-56423582">Generamba от Rambler</a> - презентация от разработчиков
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/watch?v=NXNiN9FaUnY">Generamba от Rambler</a> - видео с конференции
+						</li>
+						<li>
+							<a target="_blank" href="https://github.com/robb/Cartography">Cartography</a> -  UI в коде
+						</li>
+						<li>
+							<a target="_blank" href="https://github.com/SwiftGen/SwiftGen">SwiftGen</a> -  кодогенерация ресурсов
+						</li>
+						<li>
+							<a target="_blank" href="https://github.com/SwiftGen/SwiftGen/wiki/Integrate-SwiftGen-in-an-xcodeproj">Integrate SwiftGen in an xcodeproj</a>
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/channel/UCXlCPCsB09ftBA5bQfiSWoQ/videos">Swiftbook</a> -  видеоуроки на русском
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/channel/UCPZtkJkHv_3pPC0veurLQ6Q">CocoaHeads Moscow</a> - видео с конференций CocoaHeads Moscow
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/playlist?list=PLQC2_0cDcSKB0qlj8xFLGz4_-uFSsL-Q4">Яндекс iOS</a> - доклады разработчиков Яндекса
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/watch?v=LO59z3fjc9k&list=PL7JJcdGH5aCFg8XcsyNfxL4mSOv9lBw5d">Rambler iOS</a> - доклады разработчиков Rambler
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/playlist?list=PLknJ4Vr6efQFrapblwflXGtVT9oYEGgLs">CocoaHeads Russia</a> - доклады разработчиков Avito
+						</li>
+						<li>
+							<a target="_blank" href="https://www.youtube.com/playlist?list=PLknJ4Vr6efQFHF8kRcE-C39MucyHwORYZ">Встреча iOS разработчиков</a> - доклады разработчиков Avito
+						</li>
+					</ul>
+
+					
+					<!-- <a target="_blank" href=""></a> -->
+					
+
+				</section>
+				
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
